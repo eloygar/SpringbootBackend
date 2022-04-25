@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.example.demo.models.Person;
-import com.example.demo.sevices.RickAndMortyService;
+import com.example.demo.services.RickAndMortyService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +23,11 @@ public class WebController {
         model.addAttribute("persons", persons);
         return "rickandmorty";
 
+    }
+
+    @RequestMapping("/formulariochiste")
+    public String getFormularioChiste(Model model) {
+        return "formularioInsercionChiste";
     }
 
 }

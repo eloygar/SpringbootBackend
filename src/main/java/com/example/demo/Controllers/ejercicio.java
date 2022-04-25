@@ -10,9 +10,13 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.swing.plaf.InsetsUIResource;
+
+import com.example.demo.models.Joke;
 import com.example.demo.models.Person;
 import com.example.demo.models.Persons;
-import com.example.demo.sevices.RickAndMortyService;
+import com.example.demo.services.JokeService;
+import com.example.demo.services.RickAndMortyService;
 import com.example.demo.utils.utils;
 
 import org.apache.logging.log4j.message.Message;
@@ -29,6 +33,13 @@ import ch.qos.logback.classic.pattern.Util;
 //le indica a springboot que esta clase es el controlador de nuestra aplicacion 
 @RestController
 public class ejercicio {
+
+    @Autowired
+    RickAndMortyService RickAndMortyService;
+
+    @Autowired
+    JokeService jokeService;
+
     // cuando alguien entre en https://localhost :8080/ se ejecutara esto
     @GetMapping("/")
     public String greet() {
@@ -114,6 +125,38 @@ public class ejercicio {
 
         }
         return web;
+    }
+
+    @GetMapping("/chiste")
+    public String addJoke(@RequestParam String text) {
+        // Insert into joke(text) values ('xx');
+
+        return "";
+
+    }
+
+    // listar chistes
+    @GetMapping("/listarchistes")
+    public String jokeList() {
+        ArrayList<Joke> jokes = jokeService.getAllJokes();
+        String listado = "";
+        for (Joke joke : jokes) {
+            listado += joke.getText();
+
+            listado += "<br/>";
+        }
+        return listado;
+    }
+
+    @PostMapping("/insertarchiste")
+    public String addJoke(@RequestParam Map<String, String> body) {
+        String jokeText = body.get("text");
+        jokeText.replaceAll("<", "");
+        jokeText.replaceAll(">", "");
+        Joke joke = new Joke();
+        joke.setText(jokeText);
+        jokeService.saveJoke(joke);
+        return "Chiste creado correctamente";
     }
 
 }
